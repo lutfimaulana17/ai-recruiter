@@ -1,8 +1,16 @@
+import CreateOptions from '@/components/dashboard/CreateOptions'
+import WelcomeContainer from '@/components/dashboard/WelcomeContainer'
+import LatestInterviewsList from '@/components/dashboard/LatestInterviewsList'
 import React from 'react'
 
 const Dasboard = () => {
   return (
-    <div>Dasboard</div>
+    <div>
+      <WelcomeContainer />
+      <h2 className='my-3 font-bold text-2xl'>Dashboard</h2>
+      <CreateOptions />
+      <LatestInterviewsList />
+    </div>
   )
 }
 

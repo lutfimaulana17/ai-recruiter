@@ -5,7 +5,7 @@ const DashboardProvider = ({ children }) => {
     return (  
         <SidebarProvider>
             <AppSideBar />
-            <div>
+            <div className="w-full p-10">
                 {children}
             </div>
         </SidebarProvider>

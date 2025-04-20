@@ -4,7 +4,9 @@ const DashboardLayout = ({ children }) => {
     return (  
         <div>
             <DashboardProvider>
-                {children}
+                <div>
+                    {children}
+                </div>
             </DashboardProvider>
         </div>
     );
