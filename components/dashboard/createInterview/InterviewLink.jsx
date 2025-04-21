@@ -5,17 +5,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { toast } from 'sonner'
 
-function InterviewLink({ interview_id, formData }) {
-    const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interview_id
-
-    const GetInterviewUrl = () => {
-        return url;
-    }
+const InterviewLink = ({ interviewId, formData, totalQuestions }) => {
+    const url = process.env.NEXT_PUBLIC_HOST_URL + '/' + interviewId
 
     const onCopyLink = async () => {
         await navigator.clipboard.writeText(url);
         toast('Link Copied')
     }
+
+    console.log('cek form data >>>', formData)
 
     return (
         <div className='flex items-center justify-center flex-col mt-10'>
@@ -35,14 +33,14 @@ function InterviewLink({ interview_id, formData }) {
                     <h2 className='p-1 px-2 text-primary bg-blue-50 rounded-4xl'>Valid for 30 Days</h2>
                 </div>
                 <div className='mt-3 flex gap-3 items-center'>
-                    <Input defaultValue={GetInterviewUrl()} disabled={true} />
+                    <Input defaultValue={url} disabled={true} />
                     <Button onClick={() => onCopyLink()}> <Copy /> Copy Link </Button>
                 </div>
                 <hr className='my-5' />
 
                 <div className='flex gap-5'>
                     <h2 className='text-sm text-gray-500 flex gap-2 items-center'><Clock className='h-4 w-4' />{formData?.duration} </h2>
-                    <h2 className='text-sm text-gray-500 flex gap-2 items-center'><List className='h-4 w-4' /> 10 Questions </h2>                   
+                    <h2 className='text-sm text-gray-500 flex gap-2 items-center'><List className='h-4 w-4' /> {totalQuestions} Questions </h2>                   
                 </div>
             </div>
 
@@ -68,4 +66,4 @@ function InterviewLink({ interview_id, formData }) {
     )
 }
 
-export default InterviewLink
+export default InterviewLink;

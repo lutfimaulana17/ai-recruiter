@@ -16,6 +16,7 @@ const CreateInterview = () => {
     const [formData, setFormData] = useState();
     const [interviewId, setInterviewId] = useState();
     const { user } = useUser();
+    const [totalQuestions, setTotalQuestions] = useState(0);
 
     const onNext = () => {
         if (!formData?.jobPosition || !formData?.jobDescription || !formData?.duration || !formData.type) {
@@ -49,11 +50,17 @@ const CreateInterview = () => {
             <FormCreate
                 onHandleInputChange={onHandleInputChange}
                 onNext={() => onNext()} />
-            : step == 2 ? <QuestionList formData={formData} onCreateLink={(interview_id) => onCreateLink(interview_id)} /> 
+            : step == 2 ? <QuestionList 
+                            formData={formData} 
+                            onCreateLink={onCreateLink} 
+                            setTotalQuestions={setTotalQuestions}
+                        /> 
                     :
                     step == 3 ?
-                        <InterviewLink interview_id={interviewId}
+                        <InterviewLink 
+                            interviewId={interviewId}
                             formData={formData}
+                            totalQuestions={totalQuestions}
                         /> : null}
         </div>
     )

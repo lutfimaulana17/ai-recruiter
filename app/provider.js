@@ -15,24 +15,26 @@ const Provider = ({ children }) => {
 
     const createNewUser = async () => {
         supabase.auth.getUser().then(async ({ data: { user } }) => {
-            let { data: Users, error } = await supabase
-            .from('Users')
-            .select("*")
-            .eq('email', user.email)
-
-            if (Users?.length === 0) {
-                const { data, error } = await supabase
+            if (user) {
+                let { data: Users, error } = await supabase
                 .from('Users')
-                .insert([
-                  { 
-                    name: user?.user_metadata?.name, 
-                    email: user?.email, 
-                    picture: user?.user_metadata?.picture,                     
-                  },
-                ]).select();
-                setUser(data[0]);
-            } else {
-                setUser(Users[0]);
+                .select("*")
+                .eq('email', user.email)
+
+                if (Users?.length === 0) {
+                    const { data, error } = await supabase
+                    .from('Users')
+                    .insert([
+                    { 
+                        name: user?.user_metadata?.name, 
+                        email: user?.email, 
+                        picture: user?.user_metadata?.picture,                     
+                    },
+                    ]).select();
+                    setUser(data[0]);
+                } else {
+                    setUser(Users[0]);
+                }
             }
             
         })

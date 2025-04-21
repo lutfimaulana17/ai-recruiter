@@ -8,11 +8,17 @@ import { supabase } from '@/services/supabaseClient';
 import { useUser } from '@/app/provider';
 import { v4 as uuidv4 } from 'uuid';
 
-const QuestionList = ({ formData, onCreateLink }) => {
+const QuestionList = ({ formData, onCreateLink, setTotalQuestions }) => {
     const [loading, setLoading] = useState(true);
     const [questionList, setQuestionList] = useState();
     const { user } = useUser();
     const [saveLoading, setSaveLoading] = useState(false);
+
+    useEffect(() => {
+        if (questionList?.length > 0) {
+            setTotalQuestions(questionList?.length);
+        }
+    }, [questionList]);
 
     useEffect(() => {
         if (formData) {
@@ -56,7 +62,7 @@ const QuestionList = ({ formData, onCreateLink }) => {
             .select()
 
         console.log('data result >>>', data)    
-
+        onCreateLink(interview_id)
         setSaveLoading(false);
     }
 
@@ -77,14 +83,16 @@ const QuestionList = ({ formData, onCreateLink }) => {
                 </div>
             }
 
-            <div className='flex justify-end mt-10'>
-                <Button 
-                    onClick={() => onComplete()} 
-                    disabled={saveLoading}>
-                    {saveLoading && <Loader2 className='animate-spin' />}
-                    Create Interview Link & Finish
-                </Button>
-            </div>
+            {questionList?.length > 0 &&
+                <div className='flex justify-end mt-10'>
+                    <Button 
+                        onClick={() => onComplete()} 
+                        disabled={saveLoading}>
+                        {saveLoading && <Loader2 className='animate-spin' />}
+                        Create Interview Link & Finish
+                    </Button>
+                </div>
+            }
 
         </div>
     )
