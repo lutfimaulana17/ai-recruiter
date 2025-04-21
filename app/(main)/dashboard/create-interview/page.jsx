@@ -13,8 +13,8 @@ import { useUser } from '@/app/provider';
 const CreateInterview = () => {
     const router = useRouter();
     const [step, setStep] = useState(1);
-    const [formData, setFormData] = useState();
-    const [interviewId, setInterviewId] = useState();
+    const [formData, setFormData] = useState(null);
+    const [interviewId, setInterviewId] = useState('');
     const { user } = useUser();
     const [totalQuestions, setTotalQuestions] = useState(0);
 
