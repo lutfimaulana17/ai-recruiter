@@ -35,8 +35,7 @@ const Provider = ({ children }) => {
                 } else {
                     setUser(Users[0]);
                 }
-            }
-            
+            }            
         })
     } 
 
