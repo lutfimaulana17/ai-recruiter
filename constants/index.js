@@ -84,3 +84,26 @@ export const QUESTIONS_PROMPT = `You are an expert technical interviewer.
     ]
 
     🎯 The goal is to create a structured, relevant, and time-optimized interview plan for a {{jobTitle}} role.`
+
+
+export const FEEDBACK_PROMPT = `{{conversation}}
+        Depends on this Interview Conversation between assitant and user, 
+        Give me feedback for user interview. Give me rating out of 10 for technical Skills, 
+        Communication, Problem Solving, Experince. Also give me summery in 3 lines 
+        about the interview and one line to let me know whether is recommanded 
+        for hire or not with msg. Give me response in JSON format
+        {
+            feedback:{
+                rating:{
+                    technicalSkills:<>,
+                    communication:<>,
+                    problemSolving:<>,
+                    experince:<>,
+                    totalRating:<>
+                },
+                summery:<in 3 Line>,
+                recommendation:true|false, //true means YES and False Means No
+                recommendationMsg:<'one Line Msg'>
+            }
+        
+        }`

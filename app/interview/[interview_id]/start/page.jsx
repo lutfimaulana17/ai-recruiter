@@ -7,6 +7,9 @@ import TimerComponent from '@/components/interview/start/TimerComponent';
 import { Loader2Icon, Mic, Phone, Timer } from 'lucide-react';
 import Vapi from "@vapi-ai/web";
 import { toast } from 'sonner';
+import { useParams, useRouter } from 'next/navigation';
+import axios from 'axios';
+import { supabase } from '@/services/supabaseClient';
 
 const Start = () => {
   const { interviewInfo, setInterviewInfo } = useContext(InterviewDataContext);
@@ -14,6 +17,9 @@ const Start = () => {
   const [activeUser, setActiveUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [callEnd, setCallEnd] = useState(false);
+  const [conversation, setConversation] = useState();
+  const { interview_id } = useParams();
+  const router = useRouter();
 
   const onStartCall = () => {
     let questionList;
@@ -78,6 +84,14 @@ const Start = () => {
   const stopInterview = () => {
     vapi.stop();
     setCallEnd(true);
+    handleGenerateFeedback();
+  }
+
+  const handleMessage = (message) => {
+    if (message?.conversation) {
+        const convoString = JSON.stringify(message.conversation);
+        setConversation(convoString);
+    }
   }
 
   useEffect(() => {
@@ -96,15 +110,43 @@ const Start = () => {
     vapi.on("call-end", () => {
         console.log("Call has ended.");
         toast('Interview Ended... Please Wait...');
+        handleGenerateFeedback();
     });
+    vapi.on("message", handleMessage);
 
     return () => {
         vapi.off('call-start', () => console.log("END"));
         vapi.off('speech-start', () => console.log("END"));
         vapi.off('speech-end', () => console.log("END"));
         vapi.off('call-end', () => console.log("END"));
+        vapi.off("message", handleMessage);
     };
-}, []);
+  }, []);
+
+  const handleGenerateFeedback = async () => {
+    setLoading(true);
+    if (!conversation) {
+        return;
+    }
+    const res = await axios.post('/api/ai-feedback', {
+        conversation: conversation
+    });
+    const content = res.data.content;
+    const FINAL_CONTENT = content.replace('```json', '').replace('```', '')
+    await supabase
+        .from('interview-feedback')
+        .insert([
+            {
+                userName: interviewInfo?.userName,
+                userEmail: interviewInfo?.userEmail,
+                interview_id: interview_id,
+                feedback: JSON.parse(FINAL_CONTENT),
+                recommended: false
+            },
+        ]);
+    setLoading(false);
+    router.replace('/interview/' + interview_id + "/completed");    
+  }
 
   return (
     <div className='p-20 lg:px-48 xl:px-56'>
@@ -140,8 +182,7 @@ const Start = () => {
 
         <div className='flex items-center gap-5 justify-center mt-7'>
             <Mic className='h-12 w-12 p-3 bg-gray-500 text-white rounded-full cursor-pointer' />
-            {!loading ? <Phone className='h-12 w-12 p-3 bg-red-500 text-white rounded-full cursor-pointer'
-                onClick={() => stopInterview()}
+            {!loading ? <Phone className='h-12 w-12 p-3 bg-red-500 text-white rounded-full cursor-pointer' onClick={() => stopInterview()}
             /> : <Loader2Icon className='animate-spin' />}
 
         </div>
