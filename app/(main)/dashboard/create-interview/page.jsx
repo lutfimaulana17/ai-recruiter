@@ -19,6 +19,10 @@ const CreateInterview = () => {
     const [totalQuestions, setTotalQuestions] = useState(0);
 
     const onNext = () => {
+        if (user?.credits <= 0) {
+            toast('Please add credits')
+            return;
+        }
         if (!formData?.jobPosition || !formData?.jobDescription || !formData?.duration || !formData.type) {
             toast('Please fill all the data!')
             return;

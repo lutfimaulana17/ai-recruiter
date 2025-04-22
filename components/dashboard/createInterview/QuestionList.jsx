@@ -49,7 +49,7 @@ const QuestionList = ({ formData, onCreateLink, setTotalQuestions }) => {
     const onComplete = async () => {
         setSaveLoading(true);
         const interview_id = uuidv4();
-        const { data, error } = await supabase
+        await supabase
             .from('Interviews')
             .insert([
                 {
@@ -58,10 +58,13 @@ const QuestionList = ({ formData, onCreateLink, setTotalQuestions }) => {
                     userEmail: user?.email,
                     interview_id: interview_id
                 },
-            ])
-            .select()
+            ]);
 
-        console.log('data result >>>', data)    
+        await supabase
+            .from('Users')
+            .update({ credits: Number(user?.credits) - 1 })
+            .eq('email', user?.email);
+
         onCreateLink(interview_id)
         setSaveLoading(false);
     }
