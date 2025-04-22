@@ -1,12 +1,32 @@
-"use client"
+"use client";
+
 import { useUser } from '@/app/provider';
 import { Button } from '@/components/ui/button';
 import { Video } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import InterviewCard from './InterviewCard';
+import { supabase } from '@/services/supabaseClient';
 
 const LatestInterviewsList = () => {
     const [interviewList, setInterviewList] = useState([]);
+    const { user } = useUser();
+
+    const getDataInterviewList = async () => {
+        let { data: interviews, error } = await supabase
+            .from('Interviews')
+            .select('*')
+            .eq('userEmail', user?.email)
+            .order('id', { ascending: false })
+            .limit(6)
+        setInterviewList(interviews);
+    }
+
+    useEffect(() => {
+        if (user) {
+            getDataInterviewList();
+        }
+    }, [user])
 
     return (
         <div className='my-5'>
@@ -19,6 +39,13 @@ const LatestInterviewsList = () => {
                     <Link href="/dashboard/create-interview">
                         <Button>+ Create New Interview</Button>
                     </Link>
+                </div>
+            }
+            {interviewList &&
+                <div className='grid grid-cols-2 mt-5 xl:grid-cols-3 gap-5'>
+                    {interviewList.map((interview, index) => (
+                        <InterviewCard interview={interview} key={index} />
+                    ))}
                 </div>
             }
         </div>
