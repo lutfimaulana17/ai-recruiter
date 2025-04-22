@@ -50,14 +50,13 @@ const Interview = () => {
             .from('Interviews')
             .select('*')
             .eq('interview_id', interview_id);
-
         setInterviewInfo({
             userName: userName,
             userEmail: userEmail,
             interviewData: interviews[0]
         });
-        router.push('/interview/' + interview_id + '/start')
         setLoading(false);
+        router.push('/interview/' + interview_id + '/start')        
     }
 
     const isValidEmail = (email) => {
