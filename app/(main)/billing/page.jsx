@@ -24,7 +24,7 @@ const Billing = () => {
                     <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
                     <p className="text-muted-foreground">Manage your Payment and credits</p>
                 </div>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="flex flex-col md:flex-row gap-6 flex-wrap">
                     <Card className="md:col-span-2 lg:col-span-1">
                         <CardHeader>
                             <CardTitle>Your Credits</CardTitle>
@@ -54,7 +54,7 @@ const Billing = () => {
                             <CardDescription>Add more interview credits to your account</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid gap-4 md:grid-cols-3">
+                            <div className="flex flex-col md:flex-row gap-4 flex-wrap">
                                 <Card>
                                     <CardHeader className="pb-2">
                                         <CardTitle className="text-lg">Basic</CardTitle>

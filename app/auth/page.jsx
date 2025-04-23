@@ -22,7 +22,7 @@ const Login = () => {
         <Image src="/logo.png" width={400} height={100} alt="Logo" className='w-[180px]' />
         <div className='flex items-center flex-col'>
             <Image src="/login.png" width={600} height={400} className='w-[400px] h-[250px]  rounded-2xl' alt="Login" />
-            <h2 className='text-2xl font-bold text-center mt-5'>Welcome to AiCruiter</h2>
+            <h2 className='text-2xl font-bold text-center mt-5'>Welcome to AiRecruiter</h2>
             <p className='text-gray-500 text-center'>Sign In With Google Authentication</p>
             <Button 
               className='mt-7 w-full'
